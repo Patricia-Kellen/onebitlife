@@ -43,19 +43,23 @@ const styles = StyleSheet.create({
   },
   roboAnimacao: {
     width: 190,
+    height: 300,
     marginTop: 30,
-    marginLeft: 25,
+    marginLeft: 60,
+
   },
   educacaoAnimacao: {
     width: 100,
+        height: 300,
     marginTop: 50,
-    marginLeft: 5,
+    marginLeft: 10,
     position: "absolute",
   },
   financasAnimacao: {
     width: 100,
+    height: 300,
     position: "absolute",
     marginTop: 50,
-    marginLeft: 95,
+    marginLeft: 210,
   },
 });

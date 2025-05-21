@@ -9,6 +9,9 @@ export default function Start() {
 const handleNavAppExplanation = () =>{
   console.log("testanndo o click")
 }
+const Explanation = () =>{
+  console.log(" click")
+}
 
   return (
     <View style={styles.container}>
@@ -18,7 +21,8 @@ const handleNavAppExplanation = () =>{
             source={require("../../assets/icons/logo3.png")}
             style={styles.logo}
           />
-          <LifeStatus />
+          <LifeStatus 
+          handlePress={handleNavAppExplanation}/>
           <Text style={styles.description}>
             Vamos transformar sua vida {"\n"} em um jogo, buscando sempre {"\n"} o melhor nível.
           </Text>
@@ -41,7 +45,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 300,
     height: 60,
-    marginTop: 60,
+    marginTop: 65,
     marginBottom: 20,
   },
   description: {
