@@ -2,11 +2,14 @@ import React from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import DefaultButton from "../../components/Common/DefaultButton";
 import ExplanationCard from "../../components/Explanation/ExplanationCard";
+import { useNavigation } from "@react-navigation/native";
 
 export default function AppExplanation(){
+const navigation = useNavigation()
 
-    function handleSetShowHome(){
-        console.log("botão funcionando!")
+
+    function handleNavHome(){
+        navigation.navigate("Home")
     }
 
     return(
@@ -19,7 +22,7 @@ export default function AppExplanation(){
                     <Text style={styles.description}>Na próxima tela você vai poder escolher {"\n"} seus 4 hábitos de forma individual.</Text>
                     <DefaultButton
                     buttonText={"Continuar"}
-                    handlePress={handleSetShowHome}
+                    handlePress={handleNavHome}
                     width={250}
                     height={50}/>
                 </View>

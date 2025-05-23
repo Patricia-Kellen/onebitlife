@@ -44,7 +44,7 @@ export default function ExplanationCard(){
                     style={styles.icon}
                 />
                 <Text style={styles.description}>
-                    <Text style={styles.mind}>Humor: </Text> Hábitos para controlar o stress {"\n"} e aumentar felicidade.
+                    <Text style={styles.fun}>Humor: </Text> Hábitos para controlar o stress {"\n"} e aumentar felicidade.
                 </Text>
             </View>
         </View>

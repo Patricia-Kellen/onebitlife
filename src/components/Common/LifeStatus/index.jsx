@@ -45,14 +45,14 @@ const styles = StyleSheet.create({
     width: 190,
     height: 300,
     marginTop: 30,
-    marginLeft: 60,
+    marginLeft: 50,
 
   },
   educacaoAnimacao: {
     width: 100,
         height: 300,
     marginTop: 50,
-    marginLeft: 10,
+    marginLeft: 7,
     position: "absolute",
   },
   financasAnimacao: {
@@ -60,6 +60,6 @@ const styles = StyleSheet.create({
     height: 300,
     position: "absolute",
     marginTop: 50,
-    marginLeft: 210,
+    marginLeft: 190,
   },
 });
