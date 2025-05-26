@@ -43,14 +43,14 @@ const styles = StyleSheet.create({
   },
   roboAnimacao: {
     width: 190,
-    height: 300,
+    height: 250,
     marginTop: 30,
     marginLeft: 50,
 
   },
   educacaoAnimacao: {
     width: 100,
-        height: 300,
+    height: 300,
     marginTop: 50,
     marginLeft: 7,
     position: "absolute",
