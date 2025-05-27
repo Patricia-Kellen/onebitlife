@@ -54,6 +54,9 @@ const styles = StyleSheet.create({
     inputStyle:{
         color:"white",
     },
+    dropdownStyle:{
+        borderWidth: 0,
+    },
     dropdownItemStyle:{
         borderWidth:1,
         borderColor:"#BBBB",
