@@ -4,13 +4,6 @@ import React from "react";
 import LottieView from "lottie-react-native";
 
 export default function LifeStatus() {
-  /* Status:
-    100- Máximo
-    50 - Médio
-    25 - Baixo
-    00 - Curto (Acabou o game)
-    No robô, consideramos primeiro Felicidade e depois Saúde xx-xx
-   */
   return (
     <View style={styles.container}>
       <LottieView
