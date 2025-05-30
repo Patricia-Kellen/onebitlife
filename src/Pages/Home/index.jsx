@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import {useNavigation} from "@react-navigation/native"
 import { ScrollView, View , Text, StyleSheet} from "react-native";
+
 import LifeStatus from "../../components/Common/LifeStatus"
 import StatusBar from "../../components/Home/StatusBar";
 import CreateHabit from "../../components/Home/CreateHabit";

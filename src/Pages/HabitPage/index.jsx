@@ -1,19 +1,60 @@
-import React, {useEffect, useState, useRef, setHabitInput} from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import React, {useEffect, useState} from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import SelectHabit from "../../components/HabitPage/SelectHabit";
 import SelectFrequency from "../../components/HabitPage/SelectFrequency";
 import Notification from "../../components/HabitPage/Notification";
+import TimeDatePicker from "../../components/HabitPage/TimerDataPicker";
+import UpdateExcludeButtons from "../../components/HabitPage/UpdateExcludeButtons";
+import DefaultButton from "../../components/Common/DefaultButton";
 
 export default function HabitPage({route}){
     const navigation = useNavigation()
     const [habitInput, setHabitInput] = useState()
-    const [frequencyInput, setFreqencyInput] = useState()
+    const [frequencyInput, setFrequencyInput] = useState()
     const [notificationToggle, setNotificationToggle] = useState()
+    const [dayNotification, setDayNotification] = useState()
+    const [timeNotification, setTimeNotification] = useState()
 
     const {create, habit} = route.params
 
+    function handleCreateHabit(){
+        if(
+            habitInput === undefined ||
+            frequencyInput === undefined
+        ){
+            Alert.alert("Você precisa selecionar um hábito e frequência para continuar")
+        
+        }else if(
+            notificationToggle === true &&
+            frequencyInput === "Diário" &&
+            timeNotification === undefined
+        ){
+            Alert.alert("Você precisa dizer o horário da notificação!")
+        }else if(
+            notificationToggle === true &&
+            frequencyInput === "Diário" &&
+            dayNotification === undefined &&
+            timeNotification === undefined
+        ){
+            Alert.alert("Você precisa dizer a frequência e o horário da notificação!")
+        }else{
+            navigation.navigate("Home",{
+                createdHabit: `Created in ${habit?.habitArea}`
+            })
+        }
+    }
+
+    function handleUpdateHabit(){
+        if(notificationToggle === true && !dayNotification && !timeNotification){
+            Alert.alert("Você precisa colorcar a frequência e horário da notificação")
+        }else{
+            navigation.navigate("Home",{
+                updatedHabit: `Updated in ${habit?.habitArea}`
+            })
+        }
+    }
     return(
         <View style={styles.container}>
             <ScrollView>
@@ -35,19 +76,54 @@ export default function HabitPage({route}){
                         </View>
 
                         <Text style={styles.inputText}>Hábito</Text>
-                        <SelectHabit habit={habit} habitInput={setHabitInput}/>
+                        <SelectHabit 
+                            habit={habit} 
+                            habitInput={setHabitInput}
+                        />
 
                         <Text style={styles.inputText}>Frequência</Text>
                         <SelectFrequency
                             habitFrequency={habit?.habitFrequency}
-                            frequencyInput={setFreqencyInput}
+                            frequencyInput={setFrequencyInput}
                         />
-                        {frequencyInput === "Mensal" ? null : (
-                            <Notification
-                                notificationToggle={notificationToggle}
-                                setNotificationToggle={setNotificationToggle}
-                            />
+
+                         
+                        {frequencyInput === "Mensal" ? null :(
+                        <Notification
+                        notificationToggle={notificationToggle}
+                        setNotificationToggle={setNotificationToggle}
+                        />
                         )}
+
+                    {notificationToggle ? (
+                        frequencyInput === "Mensal" ? null :(
+                    <TimeDatePicker
+                        frequency={frequencyInput}
+                        dayNotification={dayNotification}
+                        timeNotification={timeNotification}
+                        setDayNotification={setDayNotification}
+                        setTimeNotification={setTimeNotification}
+                    />
+                    )
+                    ) : null}
+                       
+
+                {create === false ? (
+                <UpdateExcludeButtons
+                    handleUpdate={handleUpdateHabit}
+                    habitArea={habitArea}
+                    habitInput={habitInput}
+                />
+                ) : (
+                <View style={styles.configButton}>
+                    <DefaultButton
+                    buttonText={"Criar"}
+                    handlePress={handleCreateHabit}
+                    width={250}
+                    height={50}
+                    />
+              </View>
+            )}
                     </View>
                 </View>
             </ScrollView>
@@ -67,7 +143,7 @@ const styles = StyleSheet.create({
     },
     arrowBack:{
         width:40,
-        height:40,
+        height:45,
     },
     mainContent:{
         width:250,
