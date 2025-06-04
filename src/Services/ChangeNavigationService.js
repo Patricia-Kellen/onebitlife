@@ -1,5 +1,4 @@
-import * as SQLite from "expo-sqlite"
-import db from "../Database";
+import db from "../Database/index";
 
 db.transaction((tx) =>{
     tx.executeSql(

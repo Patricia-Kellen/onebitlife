@@ -7,6 +7,22 @@ const dataMind =[
         key: "Trabalhar 60 minutos em um projeto pessoal",
         value: "Trabalhar 60 minutos em um projeto pessoal",
     },
+    {
+    key: "Ler um livro por 15 minutos",
+    value: "Ler um livro por 15 minutos",
+  },
+  {
+    key: "Ler um livro por 30 minutos",
+    value: "Ler um livro por 30 minutos3",
+  },
+  {
+    key: "Trabalhar 30 minutos em um projeto pessoal",
+    value: "Trabalhar 30 minutos em um projeto pessoal",
+  },
+  {
+    key: "Trabalhar 60 minutos em um projeto pessoal",
+    value: "Trabalhar 60 minutos em um projeto pessoal",
+  },
 ]
 
 const dataMoney= [
