@@ -7,6 +7,7 @@ import StatusBar from "../../components/Home/StatusBar";
 import CreateHabit from "../../components/Home/CreateHabit";
 import EditHabit from "../../components/Home/EditHabit";
 import ChangeNavigationService from "../../Services/ChangeNavigationService"
+import HabitsService from "../../Services/HabitsService";
 
 export default function Home({habit, frequency, habitArea, checkColor}){
     const navigation = useNavigation()
@@ -19,6 +20,19 @@ export default function Home({habit, frequency, habitArea, checkColor}){
     const today = new Date()
 
     useEffect(()=>{
+        HabitsService.findByArea("Mente").then((mind)=>{
+            setMindHabit(mind[0])
+        })
+        HabitsService.findByArea("Financeiro").then((money)=>{
+            setMindHabit(money[0])
+        })
+        HabitsService.findByArea("Corpo").then((body)=>{
+            setMindHabit(body[0])
+        })
+        HabitsService.findByArea("Humor").then((fun)=>{
+            setMindHabit(fun[0])
+        })
+
         ChangeNavigationService.checkShowHome(1)
         .then((showHome)=>{
             const formDate = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`
@@ -46,9 +60,7 @@ export default function Home({habit, frequency, habitArea, checkColor}){
 
                     {mindHabit ? (
                         <EditHabit
-                            habit={mindHabit?.habitName}
-                            frequency={`${mindHabit?.habitTime} - ${mindHabit?.habitFrequency}`}
-                            habitArea={mindHabit?.habitArea}
+                            habit={mindHabit} 
                             checkColor="#90B7F3"
                             />
                      ) : (
@@ -58,9 +70,7 @@ export default function Home({habit, frequency, habitArea, checkColor}){
 
                     {moneyHabit ? (
                         <EditHabit
-                            habit={moneyHabit?.habitName}
-                            frequency={`${moneyHabit?.habitTime} - ${moneyHabit?.habitFrequency}`}
-                            habitArea={moneyHabit?.habitArea}
+                            habit={moneyHabit}
                             checkColor="#85BB65"
                         />
                     ) : (
@@ -70,9 +80,7 @@ export default function Home({habit, frequency, habitArea, checkColor}){
 
                     {bodyHabit ? (
                         <EditHabit
-                            habit={bodyHabit?.habitName}
-                            frequency={`${mindHabit?.habitTime} - ${bodyHabit?.habitFrequency}`}
-                            habitArea={bodyHabit?.habitArea}
+                            habit={bodyHabit}
                             checkColor="#FF0044"
                         />
                     ) : (
@@ -82,9 +90,7 @@ export default function Home({habit, frequency, habitArea, checkColor}){
 
                     {funHabit ? (
                         <EditHabit
-                            habit={funHabit?.habitName}
-                            frequency={`${funHabit?.habitTime} - ${funHabit?.habitFrequency}`}
-                            habitArea={funHabit?.habitArea}
+                            habit={funHabit}
                             checkColor="#FE7F23"
                         />
                     ) : (
