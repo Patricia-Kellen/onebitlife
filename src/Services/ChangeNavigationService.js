@@ -1,4 +1,4 @@
-import db from "../Database/index";
+import db from "../Database";
 
 db.transaction((tx) =>{
     tx.executeSql(

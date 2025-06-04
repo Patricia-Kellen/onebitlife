@@ -8,16 +8,23 @@ import Notification from "../../components/HabitPage/Notification";
 import TimeDatePicker from "../../components/HabitPage/TimerDataPicker";
 import UpdateExcludeButtons from "../../components/HabitPage/UpdateExcludeButtons";
 import DefaultButton from "../../components/Common/DefaultButton";
+import HabitsService from "../../Services/HabitsService"
 
 export default function HabitPage({route}){
     const navigation = useNavigation()
     const [habitInput, setHabitInput] = useState()
+
     const [frequencyInput, setFrequencyInput] = useState()
     const [notificationToggle, setNotificationToggle] = useState()
     const [dayNotification, setDayNotification] = useState()
     const [timeNotification, setTimeNotification] = useState()
 
     const {create, habit} = route.params
+
+    const habitCreated = new Date()
+    const formatDate = `${habitCreated.getFullYear()}-${
+        habitCreated.getMonth() + 1
+        }-${habitCreated.getDate()}`
 
     function handleCreateHabit(){
         if(
@@ -40,10 +47,23 @@ export default function HabitPage({route}){
         ){
             Alert.alert("Você precisa dizer a frequência e o horário da notificação!")
         }else{
+            HabitsService.createHabit({
+        habitArea: habit?.habitArea,
+        habitName: habitInput,
+        habitFrequency: frequencyInput,
+        habitHasNotification: notificationToggle,
+        habitNotificationFrequency: dayNotification,
+        habitNotificationTime: timeNotification,
+        lastCheck: formatDate,
+        daysWithoutChecks: 0,
+        habitIsChecked: 0,
+        progressBar: 1,
+        }).then(() => {
+        Alert.alert("Sucesso na criação do hábito!");
             navigation.navigate("Home",{
                 createdHabit: `Created in ${habit?.habitArea}`
             })
-        }
+        })
     }
 
     function handleUpdateHabit(){
@@ -54,7 +74,7 @@ export default function HabitPage({route}){
                 updatedHabit: `Updated in ${habit?.habitArea}`
             })
         }
-    }
+    }}
     return(
         <View style={styles.container}>
             <ScrollView>
