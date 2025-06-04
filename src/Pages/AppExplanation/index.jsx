@@ -3,12 +3,13 @@ import { ScrollView, View, Text, StyleSheet } from "react-native";
 import DefaultButton from "../../components/Common/DefaultButton";
 import ExplanationCard from "../../components/Explanation/ExplanationCard";
 import { useNavigation } from "@react-navigation/native";
+import ChangeNavigationService from "../../Services/ChangeNavigationService";
 
 export default function AppExplanation(){
 const navigation = useNavigation()
 const [showHome, setShowHome] = useState("false")
 const startDate = new Date()
-const appStartData = `${startDate.getFullYear()}-${startDate.getMonth()}-${startDate()}`
+const appStartData = `${startDate.getFullYear()}-${startDate.getMonth()}-${startDate.getDate()}`
 
 
     function handleNavHome(){
