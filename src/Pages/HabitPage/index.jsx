@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -64,34 +64,37 @@ export default function HabitPage({route}){
                 createdHabit: `Created in ${habit?.habitArea}`
             })
         })
-    }
+    }}
 
-    function handleUpdateHabit(){
-        if(notificationToggle === true && !dayNotification && !timeNotification){
-            Alert.alert("Você precisa colorcar a frequência e horário da notificação")
-        }else{
-            HabitsService.updateHabit({
-            habitArea: habit?.habitArea,
-            habitName: habitInput,
-            habitFrequency: frequencyInput,
-            habitHasNotification: notificationToggle,
-            habitNotificationFrequency: dayNotification,
-            habitNotificationTime: timeNotification,
-            habitNotificationId: notificationToggle ? habitInput : null,
-        }).then(()=>{
-            Alert.alert("Sucesso na atualização do hábito");
-            if(!notificationToggle){
-
-            }else{
-
-            }
-            navigation.navigate("Home", {
-                updateHabit:`Update in ${habit?.habitArea}`,
-            })
-            })
+    function handleUpdateHabit() {
+    if (notificationToggle === true && !dayNotification && !timeNotification) {
+      Alert.alert("Você precisa colocar a frequência e horário da notificação");
+		} else {
+      HabitsService.updateHabit({
+        habitArea: habit?.habitArea,
+        habitName: habitInput,
+        habitFrequency: frequencyInput,
+        habitHasNotification: notificationToggle,
+        habitNotificationFrequency: dayNotification,
+        habitNotificationTime: timeNotification,
+        habitNotificationId: notificationToggle ? habitInput : null,
+      }).then(() => {
+        Alert.alert("Sucesso na atualização do hábito");
+        if (!notificationToggle) {
+        
+        } else {
+     
         }
-        }
+        navigation.navigate("Home", {
+          updatedHabit: `Updated in ${habit?.habitArea}`,
+        });
+      }) .catch((error) => {
+    console.log("Erro ao atualizar hábito:", error);
+    Alert.alert("Erro ao atualizar hábito");
+  });
     }
+  }
+    
 
         
     return(
@@ -150,7 +153,7 @@ export default function HabitPage({route}){
                 {create === false ? (
                 <UpdateExcludeButtons
                     handleUpdate={handleUpdateHabit}
-                    habitArea={habitArea}
+                    habitArea={habit?.habitArea}
                     habitInput={habitInput}
                 />
                 ) : (
