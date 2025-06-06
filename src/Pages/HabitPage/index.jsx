@@ -70,11 +70,30 @@ export default function HabitPage({route}){
         if(notificationToggle === true && !dayNotification && !timeNotification){
             Alert.alert("Você precisa colorcar a frequência e horário da notificação")
         }else{
-            navigation.navigate("Home",{
-                updatedHabit: `Updated in ${habit?.habitArea}`
+            HabitsService.updateHabit({
+            habitArea: habit?.habitArea,
+            habitName: habitInput,
+            habitFrequency: frequencyInput,
+            habitHasNotification: notificationToggle,
+            habitNotificationFrequency: dayNotification,
+            habitNotificationTime: timeNotification,
+            habitNotificationId: notificationToggle ? habitInput : null,
+        }).then(()=>{
+            Alert.alert("Sucesso na atualização do hábito");
+            if(!notificationToggle){
+
+            }else{
+
+            }
+            navigation.navigate("Home", {
+                updateHabit:`Update in ${habit?.habitArea}`,
+            })
             })
         }
-    }}
+        }
+    }
+
+        
     return(
         <View style={styles.container}>
             <ScrollView>
