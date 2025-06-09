@@ -54,5 +54,13 @@ async function createNotification(
     })
 }
 
+ async function deleteNotification(habitInput) {
+        await Notifications.cancelScheduledNotificationAsync(habitInput).then(()=>{
+            console.log("Exclusão feita!")
+        })
+    }
 
-export default {createNotification}
+export default {
+    createNotification,
+    deleteNotification
+}
