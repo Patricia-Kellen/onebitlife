@@ -1,6 +1,7 @@
-import React, { useState} from "react";
+import React, { useEffect, useRef, useState} from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as Notifications from "expo-notifications"
 
 import SelectHabit from "../../components/HabitPage/SelectHabit";
 import SelectFrequency from "../../components/HabitPage/SelectFrequency";
@@ -9,6 +10,14 @@ import TimeDatePicker from "../../components/HabitPage/TimerDataPicker";
 import UpdateExcludeButtons from "../../components/HabitPage/UpdateExcludeButtons";
 import DefaultButton from "../../components/Common/DefaultButton";
 import HabitsService from "../../Services/HabitsService"
+
+Notifications.setNotificationHandler({
+    handlerNotifications: async() => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    })
+})
 
 export default function HabitPage({route}){
     const navigation = useNavigation()
@@ -25,6 +34,10 @@ export default function HabitPage({route}){
     const formatDate = `${habitCreated.getFullYear()}-${
         habitCreated.getMonth() + 1
         }-${habitCreated.getDate()}`
+
+    const [notification, setNotification] = useState(false)
+    const notificationListener = useRef()
+    const responseListener = useRef()
 
     function handleCreateHabit(){
         if(
@@ -81,21 +94,54 @@ export default function HabitPage({route}){
       }).then(() => {
         Alert.alert("Sucesso na atualização do hábito");
         if (!notificationToggle) {
-        
+            NotificationsServise.deleteNotification(habitInput)
         } else {
-     
+            NotificationsServise.CreateNotification(
+                habitInput,
+                frequencyInput,
+                dayNotification,
+                timeNotification
+            )
         }
         navigation.navigate("Home", {
-          updatedHabit: `Updated in ${habit?.habitArea}`,
+          updatedHabit: `Updated in ${habitArea}`,
         });
       }) .catch((error) => {
-    console.log("Erro ao atualizar hábito:", error);
-    Alert.alert("Erro ao atualizar hábito");
+        console.log("Erro ao atualizar hábito:", error);
+        Alert.alert("Erro ao atualizar hábito");
   });
     }
   }
     
+useEffect(()=>{
+    if(habit?.habitHasNotification == 1){
+        setNotificationToggle(true)
+        setDayNotification(habit?.habitNotificationFrequency)
+        setTimeNotification(habit?.habitNotificationTime)
+    }
+},[])
 
+useEffect(()=>{
+    if(notificationToggle == false){
+        setTimeNotification(null)
+        setDayNotification(null)
+    }
+}, [notificationToggle])
+
+useEffect(()=>{
+    notificationListener.current = Notifications.addNotificationReceivedListener((notification)=>{
+        setNotification(notification)
+    })
+
+    responseListener.current = Notifications.addNotificationReceivedListener((response)=>{
+        console.log(response)
+    })
+
+    return()=>{
+        notificationListener.remove()
+        responseListener.remove()
+    }
+})
         
     return(
         <View style={styles.container}>

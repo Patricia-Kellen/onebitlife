@@ -9,7 +9,7 @@ import EditHabit from "../../components/Home/EditHabit";
 import ChangeNavigationService from "../../Services/ChangeNavigationService"
 import HabitsService from "../../Services/HabitsService";
 
-export default function Home({habit, frequency, habitArea, checkColor}){
+export default function Home({route}){
     const navigation = useNavigation()
     const [mindHabit,setMindHabit] = useState()
     const [moneyHabit,setMoneyHabit] = useState()
@@ -18,6 +18,12 @@ export default function Home({habit, frequency, habitArea, checkColor}){
 
     const [robotDaysLife, setRobotDayLife] = useState()
     const today = new Date()
+
+   function handleNavExplanation(){
+        navigation.navigate("AppExplanation")
+    }
+
+    const excludeArea = route.params?.excludeArea
 
     useEffect(()=>{
         HabitsService.findByArea("Mente").then((mind)=>{
@@ -33,6 +39,21 @@ export default function Home({habit, frequency, habitArea, checkColor}){
             setMindHabit(fun[0])
         })
 
+        if(excludeArea){
+            if(excludeArea == "Mente"){
+                setMindHabit(null)
+            }
+            if(excludeArea == "Financeiro"){
+                setMoneyHabit(null)
+            }
+            if(excludeArea == "Corpo"){
+                setBodyHabit(null)
+            }
+            if(excludeArea == "Humor"){
+                setFunHabit(null)
+            }
+        }
+
         ChangeNavigationService.checkShowHome(1)
         .then((showHome)=>{
             const formDate = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`
@@ -44,10 +65,7 @@ export default function Home({habit, frequency, habitArea, checkColor}){
         .catch((err)=> console.log(err))
     }, [route.params])
 
-    function handleNavExplanation(){
-        navigation.navigate("AppExplanation")
-    }
-
+    
     return(
         <View style={styles.container}>
             <ScrollView>
