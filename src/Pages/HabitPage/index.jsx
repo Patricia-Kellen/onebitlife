@@ -103,9 +103,10 @@ export default function HabitPage({route}){
       }).then(() => {
         Alert.alert("Sucesso na atualização do hábito");
         if (!notificationToggle) {
-            NotificationsServise.deleteNotification(habitInput)
+            NotificationService.deleteNotification(habit?.habitName)
         } else {
-            NotificationsServise.CreateNotification(
+            NotificationService.deleteNotification(habit?.habitName)
+            NotificationService.createNotification(
                 habitInput,
                 frequencyInput,
                 dayNotification,
