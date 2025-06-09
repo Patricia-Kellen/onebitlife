@@ -10,6 +10,7 @@ import TimeDatePicker from "../../components/HabitPage/TimerDataPicker";
 import UpdateExcludeButtons from "../../components/HabitPage/UpdateExcludeButtons";
 import DefaultButton from "../../components/Common/DefaultButton";
 import HabitsService from "../../Services/HabitsService"
+import NotificationService from "../../Services/NotificationService";
 
 Notifications.setNotificationHandler({
     handlerNotifications: async() => ({
@@ -60,17 +61,25 @@ export default function HabitPage({route}){
         ){
             Alert.alert("Você precisa dizer a frequência e o horário da notificação!")
         }else{
-            HabitsService.createHabit({
-        habitArea: habit?.habitArea,
-        habitName: habitInput,
-        habitFrequency: frequencyInput,
-        habitHasNotification: notificationToggle,
-        habitNotificationFrequency: dayNotification,
-        habitNotificationTime: timeNotification,
-        lastCheck: formatDate,
-        daysWithoutChecks: 0,
-        habitIsChecked: 0,
-        progressBar: 1,
+            if(notificationToggle){
+                NotificationService.createNotification(
+                    habitInput,
+                    frequencyInput,
+                    dayNotification,
+                    timeNotification
+                )
+            }
+        HabitsService.createHabit({
+            habitArea: habit?.habitArea,
+            habitName: habitInput,
+            habitFrequency: frequencyInput,
+            habitHasNotification: notificationToggle,
+            habitNotificationFrequency: dayNotification,
+            habitNotificationTime: timeNotification,
+            lastCheck: formatDate,
+            daysWithoutChecks: 0,
+            habitIsChecked: 0,
+            progressBar: 1,
         }).then(() => {
         Alert.alert("Sucesso na criação do hábito!");
             navigation.navigate("Home",{
