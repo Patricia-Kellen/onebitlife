@@ -31,7 +31,7 @@ function animationStatus(
         }else if(moneyHabit === 0.25){
         setMoney(require("../assets/money/money-25.json")) 
         }else{
-            setMoney(require("../assets/money/money-100.json"))
+        setMoney(require("../assets/money/money-100.json"))
         }
         
         if (bodyHabit === 0.25 && funHabit === undefined) {
