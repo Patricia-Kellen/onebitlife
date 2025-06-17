@@ -9,6 +9,9 @@ import EditHabit from "../../components/Home/EditHabit";
 import ChangeNavigationService from "../../Services/ChangeNavigationService"
 import HabitsService from "../../Services/HabitsService";
 import CheckService from "../../Services/CheckService";
+import DefaultButton from "../../components/Common/DefaultButton";
+
+import db from "../../Database";
 
 
 export default function Home({route}){
@@ -20,11 +23,21 @@ export default function Home({route}){
 
     const [robotDaysLife, setRobotDayLife] = useState()
     const [checks, setChecks] = useState()
+    const [gameOver, setGameOver] = useState(false)
 
     const today = new Date()
 
    function handleNavExplanation(){
         navigation.navigate("AppExplanation")
+    }
+
+    function handleGameOver(){
+        navigation.navigate("Start")
+
+        db.transaction((tx)=>{
+            tx.executeSql("DROP TABLE habits;")
+            tx.executeSql("DROP TABLE change_navigation;")
+        })
     }
 
     const excludeArea = route.params?.excludeArea
@@ -85,13 +98,30 @@ export default function Home({route}){
         const funChecks = funHabit ? funHabit?.habitChecks : 0;
 
         setChecks(mindChecks + moneyChecks + bodyChecks + funChecks)
+
+        if(
+            mindHabit?.progressBar === 0 ||
+            moneyHabit?.progressBar === 0 ||
+            bodyHabit?.progressBar === 0 ||
+            funHabit?.progressBar === 0
+        ){
+            setGameOver(true)
+        }
     },[mindHabit,moneyHabit,bodyHabit,funHabit])
 
     return(
         <View style={styles.container}>
             <ScrollView>
                 <View style={{alignItems:"center"}}>
-                    <Text style={styles.dailyChecks}>❤️ {robotDaysLife} {robotDaysLife === "01" ? "dia" : "dias"} - ✔️ {checks} {checks === 1 ? "Check" : "Checks"}</Text>
+                    {!gameOver ? (
+                    <Text style={styles.dailyChecks}>
+                        ❤️ {robotDaysLife} {robotDaysLife === "01" ? "dia" : "dias"} - ✔️ {" "}
+                        {checks} {checks === 1 ? "Check" : "Checks"}
+                    </Text>
+
+                    ) : (
+                        <Text style={styles.gameOverTitle}>Game Over</Text>
+                    )}
 
                     <LifeStatus
                         mindHabit={mindHabit}
@@ -107,6 +137,8 @@ export default function Home({route}){
                         funHabit={funHabit?.progressBar}
                     />
 
+                {!gameOver ? (
+                        <View>
                     {mindHabit ? (
                         <EditHabit
                             habit={mindHabit} 
@@ -145,16 +177,27 @@ export default function Home({route}){
                     ) : (
                         <CreateHabit habitArea="Humor" borderColor="#FE7F23"/>
                     )}
-
-                    
-                </View>
-
-                <Text 
+                
+                    <Text 
                         style={styles.explanationText}
                         onPress={() =>{
                             handleNavExplanation()
                         }}  
                     >Ver explicações novamente</Text>
+
+                    </View>
+
+                    ) : (
+                    <View style={{marginVertical: 40}}>
+                        <DefaultButton
+                            buttonText={"Resetar o Game"}
+                            handlePress={handleGameOver}
+                            width={250}
+                            height={50} 
+                        />
+                    </View>
+                    )}
+                </View>
             </ScrollView>
         </View>
     )
@@ -180,4 +223,10 @@ export default function Home({route}){
         paddingTop:10,
         paddingBottom:30,
     },
+    gameOverTitle:{
+    marginVertical: 25,
+    fontSize: 20,
+    fontWeight: "bold",
+	color: "white"
+    }
  })
