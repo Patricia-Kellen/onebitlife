@@ -1,8 +1,11 @@
 {
   "expo": {
-    "name": "onebitlife",
+    "name": "OneBitLife",
     "slug": "onebitlife",
     "version": "1.0.0",
+    "assetBundlePatterns": ["**/*"],
+    "orientation": "portrait",
+    "icon": "./src/assets/icons/logo1.png",
     "plugins": [
       "expo-sqlite",
       "expo-asset"
